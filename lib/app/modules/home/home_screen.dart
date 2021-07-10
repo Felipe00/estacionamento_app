@@ -1,7 +1,7 @@
 import 'package:estacionamento_joao/app/core/styles/colors.dart';
 import 'package:estacionamento_joao/app/core/styles/typography.dart';
 import 'package:estacionamento_joao/app/core/widgets/action_button.dart';
-import 'package:estacionamento_joao/app/core/widgets/park_line_item_list.dart';
+import 'package:estacionamento_joao/app/core/widgets/parking_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
@@ -17,25 +17,31 @@ class _HomeScreenState extends ModularState<HomeScreen, HomeController> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          body: SingleChildScrollView(
-        child: Container(
-          padding: EdgeInsets.all(16.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _appBar(),
-              SizedBox(
-                height: 32,
-              ),
-              _btnActions(),
-              SizedBox(
-                height: 32,
-              ),
-              _parkingList()
+        body: Container(
+          padding: EdgeInsets.all(16),
+          child: CustomScrollView(
+            slivers: [
+              SliverFillRemaining(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    _appBar(),
+                    SizedBox(
+                      height: 32,
+                    ),
+                    _btnActions(),
+                    SizedBox(
+                      height: 32,
+                    ),
+                    _titleParkingList(),
+                    _parkingList()
+                  ],
+                ),
+              )
             ],
           ),
         ),
-      )),
+      ),
     );
   }
 
@@ -57,44 +63,36 @@ class _HomeScreenState extends ModularState<HomeScreen, HomeController> {
             Icons.lock_clock,
             'Encerrar\nExpediente',
             colorPrimary: false,
+            onTap: () {
+              // TODO chamar a tela de encerrar expediente
+            },
           ),
           Container(
             height: 50,
             width: 1,
             color: KameleonColors.black_40,
           ),
-          ActionButton(Icons.add, 'Nova\nEntrada'),
+          ActionButton(
+            Icons.add,
+            'Adicionar\nEntrada',
+            onTap: () => Modular.to.pushNamed('/parking'),
+          ),
         ],
       );
 
-  Widget _parkingList() => controller.parkingList[0].incomes?.isEmpty == true
-      ? Container(
-          margin: EdgeInsets.only(top: 32),
-          child: Center(child: Text('Nenhum cliente por enquanto  :)')))
-      : Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text('Últimas entradas', style: KameleonTypography.bodyEmphasis),
-            SizedBox(height: 8)
-          ]
-            ..addAll(controller.parkingList[0].incomes
-                    ?.take(5)
-                    .map((element) => ParkLineItemList(item: element))
-                    .toList() ??
-                [Container()])
-            ..add(
-              Center(
-                child: TextButton(
-                  onPressed: () {},
-                  child: Text(
-                    'TODAS ENTRADAS',
-                    style: KameleonTypography.button,
-                  ),
-                ),
-              ),
-            ),
-        );
+  Widget _parkingList() => ParkingList();
 
-  Widget _parkButton() =>
-      ElevatedButton(onPressed: () {}, child: Text('Adicionar'));
+  Widget _titleParkingList() => Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text('Entradas recentes', style: KameleonTypography.bodyEmphasis),
+          TextButton(
+            onPressed: () {},
+            child: Text(
+              'VER TUDO',
+              style: KameleonTypography.button,
+            ),
+          )
+        ],
+      );
 }

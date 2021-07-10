@@ -6,8 +6,9 @@ class ActionButton extends StatelessWidget {
   final IconData icon;
   final String title;
   final bool colorPrimary;
+  final Function onTap;
 
-  const ActionButton(this.icon, this.title, {this.colorPrimary = true});
+  const ActionButton(this.icon, this.title, {required this.onTap, this.colorPrimary = true});
 
   @override
   Widget build(BuildContext context) {
@@ -16,7 +17,7 @@ class ActionButton extends StatelessWidget {
           overlayColor: MaterialStateColor.resolveWith((states) => colorPrimary
               ? KameleonColors.primary.withAlpha(80)
               : KameleonColors.secondary.withAlpha(80))),
-      onPressed: () {},
+      onPressed: () => onTap.call(),
       child: Column(
         children: [
           Container(

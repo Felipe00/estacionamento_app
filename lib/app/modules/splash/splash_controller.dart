@@ -1,31 +1,27 @@
 import 'package:estacionamento_joao/app/core/utils/helpers.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
-import 'package:rx_notifier/rx_notifier.dart';
 
 class SplashController extends Disposable {
-  RxDisposer? listener;
 
   SplashController() {
     AppFunctions.setStatusBarColor(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.light,
     );
-
-    listener = _listenerFunction();
+    Future.delayed(Duration(seconds: 3)).then((value) => _initializeFirebase()
+        .then((value) => Modular.to.pushReplacementNamed('/home')));
   }
 
-  RxDisposer _listenerFunction() {
-    return rxObserver(() {
-      Future.delayed(Duration(seconds: 5))
-          .then((value) => Modular.to.pushReplacementNamed('/home'));
-          // iniciar o Firebase
-    });
+  Future<FirebaseApp> _initializeFirebase() async {
+    FirebaseApp firebaseApp = await Firebase.initializeApp();
+
+    return firebaseApp;
   }
 
   @override
   void dispose() {
-    listener!();
     AppFunctions.setStatusBarColor(
       statusBarColor: Colors.transparent,
       statusBarIconBrightness: Brightness.dark,

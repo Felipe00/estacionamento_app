@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "700708120523",
+    "project_id": "estacionamento-joao",
+    "storage_bucket": "estacionamento-joao.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:700708120523:android:06bbe7c0f453abe9aeb84e",
+        "android_client_info": {
+          "package_name": "com.example.estacionamento_joao"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "700708120523-64p4foovea2nkp8hf53v4e0is2vnc4ps.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDPyme-CwSFSPTnFYLnWrvbr-erPejXaN8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "700708120523-64p4foovea2nkp8hf53v4e0is2vnc4ps.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -7,8 +7,9 @@ import 'package:intl/intl.dart';
 
 class ParkLineItemList extends StatelessWidget {
   final Incomes item;
+  final String docID;
 
-  const ParkLineItemList({required this.item});
+  const ParkLineItemList({required this.item, required this.docID});
 
   @override
   Widget build(BuildContext context) {
@@ -39,6 +40,7 @@ class ParkLineItemList extends StatelessWidget {
           InkWell(
             onTap: () {
               // TODO chamar a tela para alterar um item
+              // docID
             },
             child: Icon(item.leaveAt != null ? Icons.check : Icons.keyboard_arrow_right),
           )
