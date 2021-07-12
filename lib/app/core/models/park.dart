@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 final FirebaseFirestore _firestore = FirebaseFirestore.instance;
-final CollectionReference _mainCollection = _firestore.collection('parking-joao');
+final CollectionReference _mainCollection = _firestore.collection('parking');
 
 class ParkingLot {
   String? createdAt;
@@ -45,27 +45,40 @@ class ParkingLot {
       "incomes": incomes.toJson(),
     };
 
-    await documentReferencer
-        .set(data)
-        .whenComplete(() => print("Incomes added to the database"))
-        .catchError((e) => print('>> $e'));
+    try {
+      await documentReferencer.set(data).whenComplete(() {
+        print("Incomes added to the database");
+      }).catchError((e) {
+        print('>> $e');
+      });
+    } catch (e) {
+      print('>> # >> $e');
+    }
+  }
+
+  static Query _queryItems() {
+    return _mainCollection
+        .doc(_today())
+        .collection(_incomesDbName());
+        // .orderBy('created_at', descending: true);
   }
 
   static Stream<QuerySnapshot> readItems() {
-    return _mainCollection.doc(_today()).collection(_incomesDbName()).snapshots();
+    return _queryItems().snapshots();
+  }
+
+  static Stream<QuerySnapshot> readRecentsItems() {
+    return _queryItems().limit(5).snapshots();
   }
 
   static Future<void> updateItem({
-    required List<Incomes> incomes,
+    required Incomes incomes,
     required String docId,
   }) async {
     DocumentReference documentReferencer =
         _mainCollection.doc(_today()).collection(_incomesDbName()).doc(docId);
 
-    Map<String, dynamic> data = <String, dynamic>{
-      "createdAt": _today(),
-      "incomes": incomes
-    };
+    Map<String, dynamic> data = <String, dynamic>{"incomes": incomes};
 
     await documentReferencer
         .update(data)

@@ -1,3 +1,4 @@
+import 'package:estacionamento_joao/app/core/styles/colors.dart';
 import 'package:estacionamento_joao/app/core/styles/typography.dart';
 import 'package:estacionamento_joao/app/core/widgets/custom_text_field.dart';
 import 'package:flutter/material.dart';
@@ -25,6 +26,19 @@ class _NewClientScreenState
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                SizedBox(height: 16),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(Icons.keyboard_arrow_left),
+                    TextButton(
+                      child: Text('INÍCIO',
+                          style: KameleonTypography.body
+                              .copyWith(color: KameleonColors.black)),
+                      onPressed: () => Modular.to.pop(),
+                    )
+                  ],
+                ),
                 Spacer(),
                 Text(
                   'Qual a placa do veículo?',
@@ -44,9 +58,9 @@ class _NewClientScreenState
                     }
                   },
                 ),
-
-                SizedBox(height: 32,),
-
+                SizedBox(
+                  height: 32,
+                ),
                 Text(
                   'Número da vaga? (Opcional)',
                   style: KameleonTypography.h1,
@@ -54,18 +68,20 @@ class _NewClientScreenState
                 CustomTextField(
                   controller: controller.parkingLotController,
                   inputType: TextInputType.number,
+                  maxlength: 2,
                 ),
                 Expanded(
                   child: Align(
-                      alignment: Alignment.bottomRight,
-                      child: FloatingActionButton(
-                        onPressed: () {
-                          if (formKey.currentState?.validate() == true) {
-                            controller.save();
-                          }
-                        },
-                        child: Icon(Icons.keyboard_arrow_right),
-                      )),
+                    alignment: Alignment.bottomRight,
+                    child: FloatingActionButton(
+                      onPressed: () {
+                        if (formKey.currentState?.validate() == true) {
+                          controller.save();
+                        }
+                      },
+                      child: Icon(Icons.check),
+                    ),
+                  ),
                 )
               ],
             ),

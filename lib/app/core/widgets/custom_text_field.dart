@@ -1,3 +1,4 @@
+import 'package:estacionamento_joao/app/core/styles/typography.dart';
 import 'package:flutter/material.dart';
 
 class CustomTextField extends StatelessWidget {
@@ -16,8 +17,10 @@ class CustomTextField extends StatelessWidget {
   Widget build(BuildContext context) {
     return TextFormField(
       controller: controller,
+      style: KameleonTypography.hx,
       validator: validators == null ? null : (value) => validators!(value),
       keyboardType: inputType,
+      textCapitalization: TextCapitalization.characters,
       maxLength: maxlength,
       textAlign: TextAlign.center,
       decoration: _decoration(),

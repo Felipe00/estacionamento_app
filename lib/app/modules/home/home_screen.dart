@@ -15,31 +15,29 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends ModularState<HomeScreen, HomeController> {
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        body: Container(
-          padding: EdgeInsets.all(16),
-          child: CustomScrollView(
-            slivers: [
-              SliverFillRemaining(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _appBar(),
-                    SizedBox(
-                      height: 32,
-                    ),
-                    _btnActions(),
-                    SizedBox(
-                      height: 32,
-                    ),
-                    _titleParkingList(),
-                    _parkingList()
-                  ],
-                ),
-              )
-            ],
-          ),
+    return Scaffold(
+      body: Container(
+        padding: EdgeInsets.all(16),
+        child: CustomScrollView(
+          slivers: [
+            SliverFillRemaining(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  _appBar(),
+                  SizedBox(
+                    height: 32,
+                  ),
+                  _btnActions(),
+                  SizedBox(
+                    height: 32,
+                  ),
+                  _titleParkingList(),
+                  _parkingList()
+                ],
+              ),
+            )
+          ],
         ),
       ),
     );
@@ -48,6 +46,7 @@ class _HomeScreenState extends ModularState<HomeScreen, HomeController> {
   Widget _appBar() => Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          SizedBox(height: 16),
           Text('Bem vindo,'),
           Text(
             'Seu João',
@@ -80,14 +79,16 @@ class _HomeScreenState extends ModularState<HomeScreen, HomeController> {
         ],
       );
 
-  Widget _parkingList() => ParkingList();
+  Widget _parkingList() => ParkingList(
+        firstItemsOnly: true,
+      );
 
   Widget _titleParkingList() => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text('Entradas recentes', style: KameleonTypography.bodyEmphasis),
           TextButton(
-            onPressed: () {},
+            onPressed: () => Modular.to.pushNamed('/parking/list_all'),
             child: Text(
               'VER TUDO',
               style: KameleonTypography.button,

@@ -9,6 +9,8 @@ class ParkingController extends Disposable {
   var parkingLotController = TextEditingController();
   var income = RxNotifier<Incomes?>(null);
 
+  String docId = '';
+
   ParkingController() {
     income.value = Incomes();
     AppFunctions.setStatusBarColor(
@@ -25,9 +27,21 @@ class ParkingController extends Disposable {
     _returnToHome();
   }
 
-  void _returnToHome() => Future.delayed(Duration(seconds: 3))
-      .then((value) {
-        ParkingLot.addItem(incomes: income.value!);
+  void edit() {
+    income.value?.carPlate = carPlateController.text;
+    income.value?.parkingSpace = parkingLotController.text;
+    income.value?.createdAt = DateTime.now().toString();
+    Modular.to.pushReplacementNamed('success');
+    _returnToHome(isEditing: true);
+  }
+
+  void _returnToHome({isEditing = false}) =>
+      Future.delayed(Duration(seconds: 3)).then((value) {
+        if (isEditing) {
+          ParkingLot.updateItem(incomes: income.value!, docId: docId);
+        } else {
+          ParkingLot.addItem(incomes: income.value!);
+        }
         Modular.to.pop();
       });
 
