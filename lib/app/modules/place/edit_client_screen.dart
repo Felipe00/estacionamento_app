@@ -23,6 +23,7 @@ class _EditClientScreenState
 
   @override
   void initState() {
+    controller.income.value = widget.item;
     controller.carPlateController.text =
         widget.item.carPlate ?? 'Não informado';
     controller.parkingLotController.text =

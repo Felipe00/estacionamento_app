@@ -1,3 +1,4 @@
+import 'package:estacionamento_joao/app/core/models/park.dart';
 import 'package:estacionamento_joao/app/core/styles/colors.dart';
 import 'package:estacionamento_joao/app/core/styles/typography.dart';
 import 'package:estacionamento_joao/app/core/widgets/parking_list.dart';
@@ -10,12 +11,12 @@ class ListClientsScreen extends StatelessWidget {
     return Scaffold(
       body: SingleChildScrollView(
         child: Container(
-          height: MediaQuery.of(context).size.height,
-          padding: EdgeInsets.all(16),
-          child: Column(
-            children: [
-              SizedBox(height: 16),
-              Row(
+            height: MediaQuery.of(context).size.height,
+            padding: EdgeInsets.all(16),
+            child: Column(
+              children: [
+                SizedBox(height: 16),
+                Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Icon(Icons.keyboard_arrow_left),
@@ -27,10 +28,11 @@ class ListClientsScreen extends StatelessWidget {
                     )
                   ],
                 ),
-                ParkingList(firstItemsOnly: false,)
-            ],
-          )
-        ),
+                ParkingList(
+                  firstItemsOnly: false
+                ),
+              ],
+            )),
       ),
     );
   }

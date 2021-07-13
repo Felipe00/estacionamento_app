@@ -57,28 +57,27 @@ class ParkingLot {
   }
 
   static Query _queryItems() {
-    return _mainCollection
-        .doc(_today())
-        .collection(_incomesDbName());
-        // .orderBy('created_at', descending: true);
+    return _mainCollection.doc(_today()).collection(_incomesDbName());
+    // .orderBy('created_at', descending: true);
+  }
+
+  static Future<List<QueryDocumentSnapshot>> readItem() async {
+    return (await _queryItems().get()).docs;
   }
 
   static Stream<QuerySnapshot> readItems() {
     return _queryItems().snapshots();
   }
 
-  static Stream<QuerySnapshot> readRecentsItems() {
-    return _queryItems().limit(5).snapshots();
-  }
-
   static Future<void> updateItem({
     required Incomes incomes,
-    required String docId,
   }) async {
-    DocumentReference documentReferencer =
-        _mainCollection.doc(_today()).collection(_incomesDbName()).doc(docId);
+    DocumentReference documentReferencer = _mainCollection
+        .doc(_today())
+        .collection(_incomesDbName())
+        .doc(incomes.docId);
 
-    Map<String, dynamic> data = <String, dynamic>{"incomes": incomes};
+    Map<String, dynamic> data = <String, dynamic>{"incomes": incomes.toJson()};
 
     await documentReferencer
         .update(data)
@@ -92,14 +91,28 @@ class Incomes {
   String? leaveAt;
   String? parkingSpace;
   String? carPlate;
+  String? docId;
 
-  Incomes({this.createdAt, this.leaveAt, this.parkingSpace, this.carPlate});
+  Incomes(
+      {this.createdAt,
+      this.leaveAt,
+      this.parkingSpace,
+      this.carPlate,
+      this.docId});
 
   Incomes.fromJson(Map<String, dynamic> json) {
     createdAt = json['created_at'];
     leaveAt = json['leave_at'];
     parkingSpace = json['parking_space'];
     carPlate = json['car_plate'];
+  }
+
+  Incomes.fromJsonDocId(Map<String, dynamic> json, currentId) {
+    createdAt = json['created_at'];
+    leaveAt = json['leave_at'];
+    parkingSpace = json['parking_space'];
+    carPlate = json['car_plate'];
+    docId = currentId;
   }
 
   Map<String, dynamic> toJson() {

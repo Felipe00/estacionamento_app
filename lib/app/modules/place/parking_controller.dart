@@ -28,9 +28,8 @@ class ParkingController extends Disposable {
   }
 
   void edit() {
-    income.value?.carPlate = carPlateController.text;
     income.value?.parkingSpace = parkingLotController.text;
-    income.value?.createdAt = DateTime.now().toString();
+    income.value?.leaveAt = DateTime.now().toString();
     Modular.to.pushReplacementNamed('success');
     _returnToHome(isEditing: true);
   }
@@ -38,7 +37,7 @@ class ParkingController extends Disposable {
   void _returnToHome({isEditing = false}) =>
       Future.delayed(Duration(seconds: 3)).then((value) {
         if (isEditing) {
-          ParkingLot.updateItem(incomes: income.value!, docId: docId);
+          ParkingLot.updateItem(incomes: income.value!);
         } else {
           ParkingLot.addItem(incomes: income.value!);
         }

@@ -15,7 +15,7 @@ class ParkingModule extends Module {
   final List<ModularRoute> routes = [
     ChildRoute('/new_client', child: (_, __) => NewClientScreen()),
     ChildRoute('/edit', child: (_, args) => EditClientScreen(args.data['docId'], args.data['incomes'])),
-    ChildRoute('/list_all', child: (_, __) => ListClientsScreen()),
+    ChildRoute('/list_all', child: (_, args) => ListClientsScreen()),
     ChildRoute('/success', child: (_, __) => SuccessScreen()),
   ];
 }

@@ -5,11 +5,7 @@ import 'package:estacionamento_joao/app/core/widgets/park_line_item_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
 
-class ParkingList extends StatelessWidget {
-  final bool firstItemsOnly;
-
-  ParkingList({this.firstItemsOnly = false});
-
+class CloseParkList extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<QuerySnapshot>(
@@ -26,7 +22,6 @@ class ParkingList extends StatelessWidget {
             List<Incomes>? items = _getItems(snapshot);
             items?.sort((a, b) => DateTime.parse(b.createdAt!)
                 .compareTo(DateTime.parse(a.createdAt!)));
-                
             return Expanded(
               child: ListView.separated(
                   separatorBuilder: (context, index) => SizedBox(height: 8.0),
@@ -56,18 +51,10 @@ class ParkingList extends StatelessWidget {
   }
 
   List<Incomes>? _getItems(AsyncSnapshot<QuerySnapshot> snapshot) {
-    if (firstItemsOnly) {
-      return snapshot.data?.docs
-          .map((e) {
-            return Incomes.fromJsonDocId(e.data()['incomes'], e.id);
-          })
-          .where((element) => element.leaveAt == null)
-          .take(5)
-          .toList();
-    } else {
-      return snapshot.data?.docs.map((e) {
-        return Incomes.fromJsonDocId(e.data()['incomes'], e.id);
-      }).toList();
-    }
+    return snapshot.data?.docs
+        .map((e) {
+          return Incomes.fromJsonDocId(e.data()['incomes'], e.id);
+        })
+        .toList();
   }
 }

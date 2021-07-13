@@ -4,6 +4,7 @@ import 'package:estacionamento_joao/app/core/widgets/action_button.dart';
 import 'package:estacionamento_joao/app/core/widgets/parking_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_modular/flutter_modular.dart';
+import 'package:rx_notifier/rx_notifier.dart';
 
 import 'home_controller.dart';
 
@@ -13,6 +14,12 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends ModularState<HomeScreen, HomeController> {
+  @override
+  void initState() {
+    controller.updateList();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -63,7 +70,7 @@ class _HomeScreenState extends ModularState<HomeScreen, HomeController> {
             'Encerrar\nExpediente',
             colorPrimary: false,
             onTap: () {
-              // TODO chamar a tela de encerrar expediente
+              nextScreen('/close_park');
             },
           ),
           Container(
@@ -74,21 +81,23 @@ class _HomeScreenState extends ModularState<HomeScreen, HomeController> {
           ActionButton(
             Icons.add,
             'Adicionar\nEntrada',
-            onTap: () => Modular.to.pushNamed('/parking'),
+            onTap: () => nextScreen('/parking'),
           ),
         ],
       );
 
-  Widget _parkingList() => ParkingList(
-        firstItemsOnly: true,
-      );
+  Widget _parkingList() => RxBuilder(builder: (_) {
+        print('>> ${controller.updateScreen}'); // Hack pra atualizar a lista
+        controller.updateScreen.value = false;
+        return ParkingList(firstItemsOnly: true);
+      });
 
   Widget _titleParkingList() => Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text('Entradas recentes', style: KameleonTypography.bodyEmphasis),
           TextButton(
-            onPressed: () => Modular.to.pushNamed('/parking/list_all'),
+            onPressed: () => nextScreen('/parking/list_all'),
             child: Text(
               'VER TUDO',
               style: KameleonTypography.button,
@@ -96,4 +105,10 @@ class _HomeScreenState extends ModularState<HomeScreen, HomeController> {
           )
         ],
       );
+
+  void nextScreen(String route, {arguments}) {
+    Modular.to
+        .pushNamed(route, arguments: arguments)
+        .then((value) => controller.updateList());
+  }
 }
