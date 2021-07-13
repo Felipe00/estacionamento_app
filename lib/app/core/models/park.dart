@@ -107,7 +107,10 @@ class Incomes {
     carPlate = json['car_plate'];
   }
 
-  Incomes.fromJsonDocId(Map<String, dynamic> json, currentId) {
+  Incomes.fromJsonDocId(Map<String, dynamic>? json, currentId) {
+    if (json == null) {
+      json = Map<String, dynamic>();
+    }
     createdAt = json['created_at'];
     leaveAt = json['leave_at'];
     parkingSpace = json['parking_space'];

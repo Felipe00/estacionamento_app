@@ -27,6 +27,7 @@
   <link rel="manifest" href="manifest.json">
 </head>
 <body>
+
   <!-- This script installs service_worker.js to provide PWA functionality to
        application. For more information, see:
        https://developers.google.com/web/fundamentals/primers/service-workers -->
@@ -51,7 +52,7 @@
         // Otherwise, the browser will load the script multiple times,
         // potentially different versions.
         var serviceWorkerUrl = 'flutter_service_worker.js?v=' + serviceWorkerVersion;
-        navigator.serviceWorker.register(serviceWorkerUrl)
+        navigator.serviceWorker?.register(serviceWorkerUrl)
           .then((reg) => {
             function waitForActivation(serviceWorker) {
               serviceWorker.addEventListener('statechange', () => {
@@ -64,7 +65,13 @@
             if (!reg.active && (reg.installing || reg.waiting)) {
               // No active web worker and we have installed or are installing
               // one for the first time. Simply wait for it to activate.
-              waitForActivation(reg.installing ?? reg.waiting);
+              // waitForActivation(reg.installing ?? reg.waiting);
+              if(reg.installing != null) {
+                waitForActivation(reg.installing);
+              }
+              if(reg.waiting != null) {
+                waitForActivation(reg.waiting);
+              }
             } else if (!reg.active.scriptURL.endsWith(serviceWorkerVersion)) {
               // When the app updates the serviceWorkerVersion changes, so we
               // need to ask the service worker to update.
@@ -87,12 +94,39 @@
             );
             loadMainDartJs();
           }
-        }, 4000);
+        }, 10 * 1000);
       });
     } else {
       // Service workers not supported. Just drop the <script> tag.
       loadMainDartJs();
     }
+  </script>
+
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-app.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+  <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-analytics.js"></script>
+
+  <script src="https://www.gstatic.com/firebasejs/8.7.1/firebase-firestore.js"></script>
+
+  <script>
+    // Your web app's Firebase configuration
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+    var firebaseConfig = {
+      apiKey: "AIzaSyBBZiqH5NUL5iTK4VDmbPppG0A5GpN_kpc",
+      authDomain: "estacionamento-joao.firebaseapp.com",
+      databaseURL: "https://estacionamento-joao-default-rtdb.firebaseio.com",
+      projectId: "estacionamento-joao",
+      storageBucket: "estacionamento-joao.appspot.com",
+      messagingSenderId: "700708120523",
+      appId: "1:700708120523:web:b8282d3f611cd72baeb84e",
+      measurementId: "G-78HKH1RMRQ"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+    firebase.analytics();
   </script>
 </body>
 </html>

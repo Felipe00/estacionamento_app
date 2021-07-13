@@ -18,21 +18,22 @@ class ParkingList extends StatelessWidget {
           if (snapshot.hasError) {
             return Text('Ops, algo deu errado');
           } else if (snapshot.hasData || snapshot.data != null) {
-            if (snapshot.data?.size == 0) {
+            List<Incomes>? items = _getItems(snapshot);
+            items?.sort((a, b) => DateTime.parse(b.createdAt!)
+                .compareTo(DateTime.parse(a.createdAt!)));
+
+            if (items == null || items.length == 0) {
               return Expanded(
                 child: Center(child: Text('Aguardando novos clientes')),
               );
             }
-            List<Incomes>? items = _getItems(snapshot);
-            items?.sort((a, b) => DateTime.parse(b.createdAt!)
-                .compareTo(DateTime.parse(a.createdAt!)));
-                
+
             return Expanded(
               child: ListView.separated(
                   separatorBuilder: (context, index) => SizedBox(height: 8.0),
-                  itemCount: items?.length ?? 0,
+                  itemCount: items.length,
                   itemBuilder: (context, index) {
-                    var item = items![index];
+                    var item = items[index];
                     return ParkLineItemList(
                       item: item,
                       docID: item.docId!,
@@ -59,14 +60,14 @@ class ParkingList extends StatelessWidget {
     if (firstItemsOnly) {
       return snapshot.data?.docs
           .map((e) {
-            return Incomes.fromJsonDocId(e.data()['incomes'], e.id);
+            return Incomes.fromJsonDocId((e.data()! as Map)['incomes'], e.id);
           })
           .where((element) => element.leaveAt == null)
           .take(5)
           .toList();
     } else {
       return snapshot.data?.docs.map((e) {
-        return Incomes.fromJsonDocId(e.data()['incomes'], e.id);
+        return Incomes.fromJsonDocId((e.data()! as Map)['incomes'], e.id);
       }).toList();
     }
   }

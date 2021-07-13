@@ -1,4 +1,3 @@
-import 'package:estacionamento_joao/app/core/models/park.dart';
 import 'package:estacionamento_joao/app/core/styles/colors.dart';
 import 'package:estacionamento_joao/app/core/styles/typography.dart';
 import 'package:estacionamento_joao/app/core/widgets/parking_list.dart';
@@ -28,9 +27,7 @@ class ListClientsScreen extends StatelessWidget {
                     )
                   ],
                 ),
-                ParkingList(
-                  firstItemsOnly: false
-                ),
+                ParkingList(firstItemsOnly: false),
               ],
             )),
       ),

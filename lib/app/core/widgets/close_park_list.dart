@@ -53,7 +53,7 @@ class CloseParkList extends StatelessWidget {
   List<Incomes>? _getItems(AsyncSnapshot<QuerySnapshot> snapshot) {
     return snapshot.data?.docs
         .map((e) {
-          return Incomes.fromJsonDocId(e.data()['incomes'], e.id);
+          return Incomes.fromJsonDocId((e.data()! as Map)['incomes'], e.id);
         })
         .toList();
   }
